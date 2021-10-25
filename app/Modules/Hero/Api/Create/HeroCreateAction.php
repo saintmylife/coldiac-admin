@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Modules\Hero\Api\Create;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Hero\Domain\Service\HeroCreate;
+use Illuminate\Http\Request;
+
+/**
+ * HeroCreateAction
+ */
+class HeroCreateAction extends Controller
+{
+    private $domain;
+    private $responder;
+
+    public function __construct(HeroCreate $domain, HeroCreateResponder $responder)
+    {
+        $this->domain = $domain;
+        $this->responder = $responder;
+    }
+
+    public function __invoke(Request $request)
+    {
+        $payload = $this->domain->__invoke($request->all());
+        return $this->responder->__invoke($payload);
+    }
+}
